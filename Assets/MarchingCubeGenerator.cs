@@ -8,6 +8,7 @@ public class MarchingCubeGenerator : MonoBehaviour
     [SerializeField]private int gridSizeX = 15;
     [SerializeField]private int gridSizeY = 15;
     [SerializeField]private int gridSizeZ = 15;
+    [SerializeField] private float noiseScale;
     private Vector3 sphereCenter;
     [SerializeField]private float radius = 5;
     public bool visualizing;
@@ -29,7 +30,7 @@ public class MarchingCubeGenerator : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++) {
                 for (int z = 0; z < gridSizeZ; z++) {
                 float distance = Vector3.Distance(new Vector3(x, y, z), sphereCenter);
-                scalarField[x, y, z] = radius - distance;
+                scalarField[x, y, z] = (radius - distance);
                 }
             }
         }
@@ -67,9 +68,14 @@ void ProcessCube(int x, int y, int z) {
             return;
         }
         else{
-            Vector3 edgeStart = new Vector3Int(x,y,z) + MarchingCubesTables.Edges[edges[i],0];
-            Vector3 edgeEnd = new Vector3Int(x,y,z) + MarchingCubesTables.Edges[edges[i],1];
-            Vector3 vertex = (edgeStart + edgeEnd)/2; // if interpolation, change this
+            Vector3Int edgeStart = new Vector3Int(x,y,z) + MarchingCubesTables.Edges[edges[i],0];
+            Vector3Int edgeEnd = new Vector3Int(x,y,z) + MarchingCubesTables.Edges[edges[i],1];
+            Vector3 vertex = (edgeStart+edgeEnd)/2;
+            // Vector3 vertex = CulculateVertexPosition(edgeStart,scalarField[edgeStart.x,edgeStart.y,edgeStart.z],
+            // edgeEnd,scalarField[edgeEnd.x,edgeEnd.y,edgeEnd.z]
+            // ); // if interpolation, change this
+            
+            
             vertices.Add(vertex);
             triangles.Add(vertices.Count - 1);
         }
@@ -83,6 +89,23 @@ void ProcessCube(int x, int y, int z) {
     //                 edgeVertices[triangleTable[cubeIndex][i + 1]],
     //                 edgeVertices[triangleTable[cubeIndex][i + 2]]);
     // }
+}
+
+
+
+private Vector3 CulculateVertexPosition(Vector3 vertex1, float value1, Vector3 vertex2, float value2){
+    if (Mathf.Abs(isolevel-value1) < 0.0001){
+        return(vertex1);
+    }
+      
+    if (Mathf.Abs(isolevel-value2) < 0.0001){
+        return(vertex2);
+    }
+      
+    if (Mathf.Abs(value1-value2) < 0.0001){
+        return(vertex1);
+    }
+    return (vertex1 + (isolevel - value1) * (vertex2 - vertex1)  / (value2 - value1));
 }
 private void SetMesh()
     {

@@ -357,6 +357,7 @@ MonoBehaviour:
   gridSizeX: 100
   gridSizeY: 100
   gridSizeZ: 100
+  noiseScale: 0.2
   radius: 20
   visualizing: 0
   isolevel: 0

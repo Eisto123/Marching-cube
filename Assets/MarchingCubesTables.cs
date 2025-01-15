@@ -7,20 +7,20 @@ public static class MarchingCubesTables
 		new int[] {4,5}, new int[] {5,6}, new int[] {6,7}, new int[] {7,4},
 		new int[] {0,4}, new int[] {1,5}, new int[] {2,6}, new int[] {3,7}
 	};
-	public static Vector3[,] Edges = new Vector3[12, 2] {
+	public static Vector3Int[,] Edges = new Vector3Int[12, 2] {
 
-		{ new Vector3(0.0f, 0.0f, 0.0f), new Vector3(1.0f, 0.0f, 0.0f) },
-		{ new Vector3(1.0f, 0.0f, 0.0f), new Vector3(1.0f, 0.0f, -1.0f) },
-		{ new Vector3(1.0f, 0.0f, -1.0f), new Vector3(0.0f, 0.0f, -1.0f) },
-		{ new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, -1.0f) },
-		{ new Vector3(0.0f, 1.0f, 0.0f), new Vector3(1.0f, 1.0f, 0.0f) },
-		{ new Vector3(1.0f, 1.0f, 0.0f), new Vector3(1.0f, 1.0f, -1.0f) },
-		{ new Vector3(1.0f, 1.0f, -1.0f), new Vector3(0.0f, 1.0f, -1.0f) },
-		{ new Vector3(0.0f, 1.0f, -1.0f), new Vector3(0.0f, 1.0f, 0.0f) },
-		{ new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f) },
-		{ new Vector3(1.0f, 0.0f, 0.0f), new Vector3(1.0f, 1.0f, 0.0f) },
-		{ new Vector3(1.0f, 0.0f, -1.0f), new Vector3(1.0f, 1.0f, -1.0f) },
-		{ new Vector3(0.0f, 0.0f, -1.0f), new Vector3(0.0f, 1.0f, -1.0f) }
+		{ new Vector3Int(0, 0, 0), new Vector3Int(1, 0, 0) },
+		{ new Vector3Int(1, 0, 0), new Vector3Int(1, 0, -1) },
+		{ new Vector3Int(1, 0, -1), new Vector3Int(0, 0, -1) },
+		{ new Vector3Int(0, 0, 0), new Vector3Int(0, 0, -1) },
+		{ new Vector3Int(0, 1, 0), new Vector3Int(1, 1, 0) },
+		{ new Vector3Int(1, 1, 0), new Vector3Int(1, 1, -1) },
+		{ new Vector3Int(1, 1, -1), new Vector3Int(0, 1, -1) },
+		{ new Vector3Int(0, 1, -1), new Vector3Int(0, 1, 0) },
+		{ new Vector3Int(0, 0, 0), new Vector3Int(0, 1, 0) },
+		{ new Vector3Int(1, 0, 0), new Vector3Int(1, 1, 0) },
+		{ new Vector3Int(1, 0, -1), new Vector3Int(1, 1, -1) },
+		{ new Vector3Int(0, 0, -1), new Vector3Int(0, 1, -1) }
 
 	};
 
