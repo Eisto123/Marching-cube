@@ -354,10 +354,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c106c0908ac4bc0498dbcfbcd87c4f3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gridSizeX: 100
-  gridSizeY: 100
-  gridSizeZ: 100
-  noiseScale: 0.2
+  gridSizeX: 50
+  gridSizeY: 50
+  gridSizeZ: 50
+  noiseScale: 0
   radius: 20
   visualizing: 0
   isolevel: 0
