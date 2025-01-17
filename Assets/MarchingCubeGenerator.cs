@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer))]
@@ -19,6 +20,10 @@ public class MarchingCubeGenerator : MonoBehaviour
     private List<Vector3> vertices = new List<Vector3>();
     private List<int> triangles = new List<int>();
     private MeshFilter meshFilter;
+    private List<Color> colors = new List<Color>();
+    public Gradient gradient = new Gradient();
+    private float maximumDif;
+    private float minimumDif;
     
 
     void Start()
@@ -33,7 +38,7 @@ public class MarchingCubeGenerator : MonoBehaviour
             for (int y = 0; y < gridSizeY; y++) {
                 for (int z = 0; z < gridSizeZ; z++) {
                 float distance = Vector3.Distance(new Vector3(x, y, z), sphereCenter);
-                scalarField[x, y, z] = (radius - distance);
+                scalarField[x, y, z] = radius - distance + noise.Perlin3D(x*noiseScale,y*noiseScale,z*noiseScale)*10f;
                 //scalarField[x, y, z] = radius - Mathf.Sqrt((x - sphereCenter.x) * (x - sphereCenter.x) + (y - sphereCenter.y) * (y - sphereCenter.y) + (z - sphereCenter.z) * (z - sphereCenter.z));
                 }
             }
@@ -80,19 +85,34 @@ void ProcessCube(int x, int y, int z) {
 		int v01 = MarchingCubesTables.edgeConnections[edges[i]][1];
 
         Vector3 v1 = CulculateVertexPosition(MarchingCubesTables.vertexOffsets[v00],cubeValues[v00],MarchingCubesTables.vertexOffsets[v01],cubeValues[v01])+worldPos;
-
+        SetColor(v1);
+        
 
 		int v10 = MarchingCubesTables.edgeConnections[edges[i + 1]][0];
 		int v11 = MarchingCubesTables.edgeConnections[edges[i + 1]][1];
         Vector3 v2 = CulculateVertexPosition(MarchingCubesTables.vertexOffsets[v10],cubeValues[v10],MarchingCubesTables.vertexOffsets[v11],cubeValues[v11])+worldPos;
+        SetColor(v2);
 
 		int v20 = MarchingCubesTables.edgeConnections[edges[i + 2]][0];
 		int v21 = MarchingCubesTables.edgeConnections[edges[i + 2]][1];
         Vector3 v3 = CulculateVertexPosition(MarchingCubesTables.vertexOffsets[v20],cubeValues[v20],MarchingCubesTables.vertexOffsets[v21],cubeValues[v21])+worldPos;
+        SetColor(v3);
 
         AddTriangle(v1,v2,v3);
     }
 }
+
+    void SetColor(Vector3 vertex){
+
+        if(Vector3.Distance(vertex, sphereCenter)>maximumDif){
+            maximumDif = Vector3.Distance(vertex, sphereCenter);
+        }else if(Vector3.Distance(vertex, sphereCenter)<minimumDif){
+            minimumDif = Vector3.Distance(vertex, sphereCenter);
+        }
+        
+        colors.Add(gradient.Evaluate(Mathf.InverseLerp(maximumDif,minimumDif,Vector3.Distance(vertex, sphereCenter))));
+    }
+
     void AddTriangle(Vector3 v1, Vector3 v2, Vector3 v3) {
         int triIndex = triangles.Count;
         vertices.Add(v1);
@@ -109,6 +129,7 @@ void ProcessCube(int x, int y, int z) {
             Mesh mesh = new Mesh();
             mesh.SetVertices(vertices);
             mesh.SetTriangles(triangles,0);
+            mesh.colors = colors.ToArray();
             mesh.RecalculateNormals();
             meshFilter.mesh = mesh;
         } 
